@@ -1,0 +1,358 @@
+{% schema %}
+{
+  "name": "Menu 3 Clics",
+  "settings": []
+}
+{% endschema %}
+
+<style>
+  .dropdown-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 600px;
+    margin: 30px auto;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Style du titre "Recherche rapide" */
+  .search-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center; /* Centrer le titre */
+  }
+
+  .highlight {
+    position: relative;
+    display: inline-block;
+    z-index: 1; /* Texte au-dessus de la ligne */
+  }
+
+  .highlight::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -4px; /* Ajuste cette valeur pour la rapprocher du texte */
+    width: 100%;
+    height: 3px;
+    background-color: #0074E6;
+    z-index: 0; /* La ligne est en dessous du texte */
+  }
+
+  .select-wrapper {
+    position: relative;
+  }
+
+  select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: #f9fafb;
+    color: #111827;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="none" stroke="%23374151" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 9l-7 7-7-7"></path></svg>');
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1.2em;
+  }
+
+  select:disabled {
+    background-color: #f3f4f6;
+    cursor: not-allowed;
+    color: #9ca3af;
+  }
+
+  #quick-search-btn {
+    background-color: #0074E6;
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  #quick-search-btn:disabled {
+    background-color: #a5c8ef;
+    cursor: not-allowed;
+  }
+
+  #quick-search-btn:hover:enabled {
+    background-color: #005bb8;
+  }
+
+  #quick-search-btn .icon {
+    width: 24px;
+    height: 24px;
+    background: url('data:image/svg+xml;utf8,<svg fill="none" stroke="%23ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 21l-4.35-4.35M16.5 11a5.5 5.5 0 1 0-11 0 5.5 5.5 0 0 0 11 0z"></path></svg>') no-repeat center center;
+    background-size: contain;
+  }
+
+  /* Mobile : marge classique */
+  @media (max-width: 768px) {
+    .dropdown-container {
+      margin: 10px;
+    }
+  }
+
+  /* Desktop : augmenter la hauteur et décalage à droite */
+  @media (min-width: 769px) {
+    .dropdown-container {
+      margin-top: -500px;
+      position: relative;
+      z-index: 10;
+      left: 600px;
+      max-width: 450px;
+    }
+  }
+</style>
+
+<style>
+  .dropdown-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 600px;
+    margin: 30px auto;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Style du titre "Recherche rapide" */
+  .search-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center; /* Centrer le titre */
+  }
+
+  .highlight {
+    position: relative;
+    display: inline-block;
+    z-index: 1; /* Texte au-dessus de la ligne */
+  }
+
+  .highlight::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 1px; /* Ajuste cette valeur pour la rapprocher du texte */
+    width: 100%;
+    height: 3px;
+    background-color: #0074E6;
+    z-index: 0; /* La ligne est en dessous du texte */
+  }
+
+  .select-wrapper {
+    position: relative;
+  }
+
+  select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: #f9fafb;
+    color: #111827;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="none" stroke="%23374151" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 9l-7 7-7-7"></path></svg>');
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1.2em;
+  }
+
+  select:disabled {
+    background-color: #f3f4f6;
+    cursor: not-allowed;
+    color: #9ca3af;
+  }
+
+  #quick-search-btn {
+    background-color: #0074E6;
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  #quick-search-btn:disabled {
+    background-color: #a5c8ef;
+    cursor: not-allowed;
+  }
+
+  #quick-search-btn:hover:enabled {
+    background-color: #005bb8;
+  }
+
+  #quick-search-btn .icon {
+    width: 24px;
+    height: 24px;
+    background: url('data:image/svg+xml;utf8,<svg fill="none" stroke="%23ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 21l-4.35-4.35M16.5 11a5.5 5.5 0 1 0-11 0 5.5 5.5 0 0 0 11 0z"></path></svg>') no-repeat center center;
+    background-size: contain;
+  }
+
+  /* Mobile : marge classique */
+  @media (max-width: 768px) {
+    .dropdown-container {
+      margin: 10px;
+    }
+  }
+
+  /* Desktop : augmenter la hauteur et décalage à droite */
+  @media (min-width: 769px) {
+    .dropdown-container {
+      margin-top: -550px;
+      position: relative;
+      z-index: 10;
+      left: 600px;
+      max-width: 450px;
+    }
+  }
+</style>
+
+<div class="dropdown-container">
+  <!-- Titre Recherche rapide -->
+  <h2 class="search-title">Recherche <span class="highlight">Rapide</span></h2>
+
+  <!-- Marque -->
+  <div class="select-wrapper">
+    <select id="select-level-1">
+      <option value="" disabled selected>Marque</option>
+      {% for item in linklists['3-clics-menu'].links %}
+        <option value="{{ forloop.index0 }}">{{ item.title }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <!-- Modèle -->
+  <div class="select-wrapper">
+    <select id="select-level-2" disabled>
+      <option value="" disabled selected>Modèle</option>
+    </select>
+  </div>
+
+  <!-- Imprimante -->
+  <div class="select-wrapper">
+    <select id="select-level-3" disabled>
+      <option value="" disabled selected>Imprimante</option>
+    </select>
+  </div>
+
+  <!-- Bouton de recherche -->
+  <button id="quick-search-btn" disabled>
+    <span class="icon"></span>
+    <span>Rechercher</span>
+  </button>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const level1 = document.getElementById('select-level-1');
+    const level2 = document.getElementById('select-level-2');
+    const level3 = document.getElementById('select-level-3');
+    const searchBtn = document.getElementById('quick-search-btn');
+
+    let finalUrl = "";
+
+    // Structure du menu
+    const menuData = [
+      {% for item in linklists['3-clics-menu'].links %}
+        {
+          title: "{{ item.title | escape }}",
+          children: [
+            {% for sub in item.links %}
+              {
+                title: "{{ sub.title | escape }}",
+                children: [
+                  {% for grandchild in sub.links %}
+                    {
+                      title: "{{ grandchild.title | escape }}",
+                      url: "{{ grandchild.url }}"
+                    },
+                  {% endfor %}
+                ]
+              },
+            {% endfor %}
+          ]
+        },
+      {% endfor %}
+    ];
+
+    level1.addEventListener('change', function () {
+      const index = this.value;
+      const selected = menuData[index];
+
+      level2.innerHTML = '<option disabled selected>Modèle</option>';
+      level3.innerHTML = '<option disabled selected>Imprimante</option>';
+      level2.disabled = true;
+      level3.disabled = true;
+      searchBtn.disabled = true;
+
+      if (selected && selected.children.length > 0) {
+        level2.disabled = false;
+        selected.children.forEach((child, i) => {
+          const option = document.createElement('option');
+          option.value = i;
+          option.textContent = child.title;
+          level2.appendChild(option);
+        });
+      }
+    });
+
+    level2.addEventListener('change', function () {
+      const index1 = level1.value;
+      const index2 = this.value;
+      const selected = menuData[index1].children[index2];
+
+      level3.innerHTML = '<option disabled selected>Imprimante</option>';
+      level3.disabled = true;
+      searchBtn.disabled = true;
+
+      if (selected && selected.children.length > 0) {
+        level3.disabled = false;
+        selected.children.forEach((child) => {
+          const option = document.createElement('option');
+          option.value = child.url;
+          option.textContent = child.title;
+          level3.appendChild(option);
+        });
+      }
+    });
+
+    level3.addEventListener('change', function () {
+      finalUrl = this.value;
+      searchBtn.disabled = !finalUrl;
+    });
+
+    searchBtn.addEventListener('click', function () {
+      if (finalUrl) {
+        window.location.href = finalUrl;
+      }
+    });
+  });
+</script>
